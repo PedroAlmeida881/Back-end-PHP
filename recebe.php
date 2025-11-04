@@ -37,16 +37,31 @@
         $data = $_POST['data'];
         $problema = $_POST['problema'];
 
+       $conn = new mysqli("localhost:3307", "root", "aluno", "aparelhos");
+
+    if ($conn->connect_error) {
+        die("<p style='color:red;'>Erro na conexão com o banco de dados: " . $conn->connect_error . "</p>");
+    }
+
+    $sql = "INSERT INTO produto (nome, telefone, aparelho, data, problema)
+            VALUES ('$nome', '$telefone', '$aparelho', '$data', '$problema')";
+
+    if ($conn->query($sql) === TRUE) {
         echo "<p><strong>Nome do cliente:</strong> $nome</p>";
         echo "<p><strong>Telefone:</strong> $telefone</p>";
         echo "<p><strong>Tipo de aparelho:</strong> $aparelho</p>";
         echo "<p><strong>Data preferida:</strong> $data</p>";
         echo "<p><strong>Descrição do problema:</strong> $problema</p>";
+        echo "<p style='color:green; font-weight:bold;'>✅ Agendamento salvo com sucesso no banco de dados!</p><br>";
+    } else {
+        echo "<p style='color:red;'>❌ Erro ao salvar: " . $conn->error . "</p>";
     }
-    ?>
 
-    <br>
-    <a href="Trabalho.php" class="botao-voltar">Voltar</a>
+    $conn->close();
+}
+?>
+
+<a href="Trabalho.php"  class="botao-voltar">Voltar ao Formulário</a>
 
 </body>
 </html>
